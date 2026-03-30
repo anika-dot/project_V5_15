@@ -1,5 +1,6 @@
 import random
 import numpy as np
+from pathlib import Path
 from Class_Fill import Field, Street, House, Business, Water, Car
 
 
@@ -9,15 +10,32 @@ class Game:
             
     def load_board_winterthur(self):
         # Hier wird die Karte von Winterthur geladen
-        f = open("Winterthur_neu.txt","r")
+        
+        # f = open("Winterthur_neu.txt","r")
+        #f = open(r"C:\Users\anika\OneDrive\Desktop\ZHAW_Master\Developing_Software_as_a_Product\Project\project_V5_15\Winterthur_neu.txt", "r")
+        #self.lines = f.readlines()
+        #f.close()
+        #self.lines = [line.rstrip('\n') for line in self.lines]
+        
+        #for line in range(len(self.lines)):
+        #    self.board.append([])
+        #    for j in range(len(self.lines[0])):
+        #        self.fill_field(line,j)
+        
+        file_path = Path(__file__).parent / "Winterthur_neu.txt"
+    
+        f = open(file_path, "r", encoding="utf-8")
+
         self.lines = f.readlines()
         f.close()
+
         self.lines = [line.rstrip('\n') for line in self.lines]
-        
+    
         for line in range(len(self.lines)):
             self.board.append([])
             for j in range(len(self.lines[0])):
-                self.fill_field(line,j)
+                self.fill_field(line, j)
+
                 
     def fill_field(self,i,j):
         # Hier wird das Spielbrett gefüllt
@@ -74,7 +92,8 @@ class Game:
                 for j in range(30):                   
                     #self.board[self.drivetime][y] = Car() #Auto wird gesetzt 
                     if self.drivetime != 0:
-                        if self.lines [self.drivetime-1][y] == "S":
+                        #if self.lines [self.drivetime-1][y] == "S":
+                        if isinstance(self.board[self.drivetime-1][y], Street):
                             self.board[self.drivetime][y] = Car()
                             self.board[self.drivetime-1][y] = Street()  #Strasse zieht mit
                         else:
