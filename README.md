@@ -12,6 +12,9 @@ This game is called “Game of Life.” Various structures from the real world a
 
 ### Project structre
 
+
+
+```
 project_V5_15/
 │── data/               # Raw and processed data (if applicable)
 │── src/                # Source code
@@ -22,6 +25,8 @@ project_V5_15/
 │── requirements.txt    # Dependencies
 │── main.py             # Entry point (if applicable)
 │── README.md
+```
+
 
 ## Getting Started
 
