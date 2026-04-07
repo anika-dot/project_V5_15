@@ -1,0 +1,16 @@
+# Python bytecode (compiled files)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Data files (NumPy arrays)
+*.npy
+
+# Optional: Images/Assets
+# (Uncomment the line below if you want to ignore the whole pics folder)
+# pics/
+
+# OS generated files
+Thumbs.db
+.DS_Store
