@@ -11,45 +11,45 @@ class PlayGame(Game):
         self.board = []
         pass
     
-    def play(self):
+    def play_winterthur_map(self):
         # Spiel mit Karte von Winterthur
-        self.load_board_winterthur()
+        self.load_winterthur_map()
         self.counter = 0
         self.drivetime = 0
 
         while True:
             os.system("clear")
-            self.print_board()
+            self.display_board()
             self.drivetime += 1
             self.counter += 1
             print()
             print("Generation: ", self.counter, "  House(☖), Business(*), Water(~), Land(.), Car(🝞), Street(=)")
             print()
-            self.populationSubT()
-            self.driveSubT()
-            self.pupsafeSubT()        
+            self.population_growth()
+            self.simulate_traffic()
+            self.check_population_safety()        
             time.sleep(0.5)
             if keyboard.is_pressed("q"):
                 print("You pressed q")
                 break
 
-    def play_random(self):
+    def play_random_map(self):
         # Spiel mit zufälligem Spielfeld
-        self.random_city()
+        self.load_random_city()
         self.counter = 0
         self.drivetime = 0
         
         while True:
             os.system("clear")
-            self.print_board()
+            self.display_board()
             self.drivetime += 1
             self.counter += 1
             print()
             print("Generation: ", self.counter, "  House(☖), Business(⌷), Water(~), Land(.), Car(🝞), Street(=)")
             print()
-            self.populationSubT()
-            self.driveSubT()
-            self.pupsafeSubT()        
+            self.population_growth()
+            self.simulate_traffic()
+            self.check_population_safety()        
             time.sleep(0.5)
             if keyboard.is_pressed("q"):
                 print("You pressed q")
