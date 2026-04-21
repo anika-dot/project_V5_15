@@ -8,7 +8,7 @@ class Game:
     def __init__(self):
         self.board = []
             
-    def load_board_winterthur(self):
+    def load_winterthur_map(self):
         # Hier wird die Karte von Winterthur geladen
         
         # f = open("Winterthur_neu.txt","r")
@@ -52,18 +52,18 @@ class Game:
         elif self.lines[i][j] == "a":
             self.board[i].append(Car())
      
-    def random_city(self):
+    def load_random_city(self):
         # Hier wird eine zufällige Karte geladen
         self.board = [[(figures[random.randrange(5)]) for x in range(30)] for y in range(30)]
         np.save("random_map.npy", self.board)
         
-    def print_board(self):        
+    def display_board(self):        
         for i in range(len(self.board)):
           for j in range(len(self.board[0])):
               print(self.board[i][j].character,end = "")
           print()
 
-    def populationSubT(self):
+    def population_growth(self):
         # Bewohner werden hinzugefügt und sie sterben
         temp_row = -1
         temp_col = -1
@@ -83,7 +83,7 @@ class Game:
                     else:
                         self.board[i][j].resident += 1
 
-    def driveSubT(self):
+    def simulate_traffic(self):
         # Auto kann auf den Strassen fahren
         car_position = 11
         self.right = True
@@ -105,7 +105,7 @@ class Game:
                         self.right = False
                         self.car_step = 0
                         
-    def pupsafeSubT(self):
+    def check_population_safety(self):
         pass        
 
 figures = [Field(), Water(), House(), Business(), Street(), Car()]
