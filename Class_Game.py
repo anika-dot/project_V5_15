@@ -65,45 +65,45 @@ class Game:
 
     def populationSubT(self):
         # Bewohner werden hinzugefügt und sie sterben
-        tempi = -1
-        tempj = -1
+        temp_row = -1
+        temp_col = -1
         for i in range(len(self.board)):
             for j in range(len(self.board[0])):                
                 if isinstance(self.board[i][j], Field):
-                    tempi = i
-                    tempj = j    
+                    temp_row = i
+                    temp_col = j    
                 if isinstance(self.board[i][j], House):
-                    self.board[i][j].bewohner -= 0.5     #Sterberate
+                    self.board[i][j].resident -= 0.5     #Sterberate
                         
-                    if self.board[i][j].bewohner == 5 and tempi >= 0:
-                        self.board[tempi][tempj] = House()
+                    if self.board[i][j].resident == 5 and temp_row >= 0:
+                        self.board[temp_row][temp_col] = House()
                         
-                    if self.board[i][j].bewohner == 0:
+                    if self.board[i][j].resident == 0:
                         self.board[i][j] = Field()
                     else:
-                        self.board[i][j].bewohner += 1
+                        self.board[i][j].resident += 1
 
     def driveSubT(self):
         # Auto kann auf den Strassen fahren
-        y = 11
+        car_position = 11
         self.right = True
         for i in range(30):
             if self.right == True:    
                 for j in range(30):                   
                     #self.board[self.drivetime][y] = Car() #Auto wird gesetzt 
-                    if self.drivetime != 0:
+                    if self.car_step != 0:
                         #if self.lines [self.drivetime-1][y] == "S":
-                        if isinstance(self.board[self.drivetime-1][y], Street):
-                            self.board[self.drivetime][y] = Car()
-                            self.board[self.drivetime-1][y] = Street()  #Strasse zieht mit
+                        if isinstance(self.board[self.car_step-1][car_position], Street):
+                            self.board[self.car_step][car_position] = Car()
+                            self.board[self.car_step-1][car_position] = Street()  #Strasse zieht mit
                         else:
-                            self.board[self.drivetime-1][y] = Street()
-                            self.board[self.drivetime][y-1] = Car()
-                            self.board[self.drivetime][y-1] = Street()
-                            y -= 1
-                    if self.drivetime == 29:
+                            self.board[self.car_step-1][car_position] = Street()
+                            self.board[self.car_step][car_position-1] = Car()
+                            self.board[self.car_step][car_position-1] = Street()
+                            car_position -= 1
+                    if self.car_step == 29:
                         self.right = False
-                        self.drivetime = 0
+                        self.car_step = 0
                         
     def pupsafeSubT(self):
         pass        

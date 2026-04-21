@@ -6,9 +6,9 @@ user_choice = int(input("Mit welcher Karte möchten Sie weiterfahren?\
                                              \n wählen Sie 1 oder 2."))
        
 if user_choice == 1:
-    g = PlayGame()
-    g.play()
+    simulation = PlayGame()
+    simulation.play()
             
 elif user_choice == 2:
-    g = PlayGame()
-    g.play_random()
+    simulation = PlayGame()
+    simulation.play_random()
