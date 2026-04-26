@@ -1,7 +1,7 @@
 import random
 import numpy as np
 from pathlib import Path
-from Class_Fill import Field, Street, House, Business, Water, Car
+from .Class_Fill import Field, Street, House, Business, Water, Car
 
 
 class Game:

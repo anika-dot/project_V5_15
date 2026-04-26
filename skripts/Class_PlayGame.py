@@ -1,5 +1,5 @@
-from Class_Fill import Field, Street, House, Business, Water, Car
-from Class_Game import Game
+from .Class_Fill import Field, Street, House, Business, Water, Car
+from .Class_Game import Game
 import os
 import time
 from pynput import keyboard
