@@ -123,8 +123,9 @@ def test_population_with_invalid_cell_raises():
 
 
 # Equivalence class 9: load board from file
-def test_load_board_winterthur():
-    game = load_board_winterthur()
+def test_load_winterthur_map():
+    game = Game()
+    game.load_winterthur_map()
     assert len(game.board) == 30
     assert len(game.board[0]) == 30
     assert isinstance(game.board[0][0], (Field, Street, House, Business, Water, Car))
