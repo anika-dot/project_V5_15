@@ -1,5 +1,4 @@
 class File:
-    # Kommas aus dem Text-File löschen
     def __init__(self):
         pass
         
