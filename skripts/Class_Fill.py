@@ -9,7 +9,7 @@ class Street(Field):
 class House(Field):
     def __init__(self):
         self.character = ("\x1b[1;21;41m" +"☖" + "\x1b[0m")
-        self.bewohner = 1
+        self.resident = 1
 
 class Business(Field):
     def __init__(self):

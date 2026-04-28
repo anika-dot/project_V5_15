@@ -6,9 +6,9 @@ user_choice = int(input("Mit welcher Karte möchten Sie weiterfahren?\
                                              \n wählen Sie 1 oder 2."))
        
 if user_choice == 1:
-    g = PlayGame()
-    g.play_winterthur_map()
+    simulation = PlayGame()
+    simulation.play_winterthur_map()
             
 elif user_choice == 2:
-    g = PlayGame()
-    g.play_random_map()
+    simulation = PlayGame()
+    simulation.play_random_map()
