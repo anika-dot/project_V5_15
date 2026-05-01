@@ -74,9 +74,7 @@ def test_population_growth_empty_board():
 def test_simulate_traffic_places_car_on_street():
     game = Game()
 
-    # minimal board instead of 30x30
-    game.board = [[Street(), Street()],
-                  [Street(), Street()]]
+    game.board = [[Street() for _ in range(30)] for _ in range(30)]
 
     game.drivetime = 1
 
