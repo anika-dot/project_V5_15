@@ -48,42 +48,44 @@ class Game:
           print()
 
     def population_growth(self):
-        tempi = -1
-        tempj = -1
+        temp_row = -1
+        temp_col = -1
         for i in range(len(self.board)):
             for j in range(len(self.board[0])):                
                 if isinstance(self.board[i][j], Field):
-                    tempi = i
-                    tempj = j    
+                    temp_row = i
+                    temp_col = j    
                 if isinstance(self.board[i][j], House):
-                    self.board[i][j].bewohner -= 0.5    # death rate applied each generation
+                    # death rate applied each generation
+                    self.board[i][j].resident -= 0.5
+
+                    # create new house on nearest empty field when population reaches threshold
+                    if self.board[i][j].resident == 5 and temp_row >= 0:
+                        self.board[temp_row][temp_col] = House()
                         
-                    if self.board[i][j].bewohner == 5 and tempi >= 0: # create new house on nearest empty field when population reaches threshold
-                        self.board[tempi][tempj] = House()
-                        
-                    if self.board[i][j].bewohner == 0:
+                    if self.board[i][j].resident == 0:
                         self.board[i][j] = Field()
                     else:
-                        self.board[i][j].bewohner += 1
+                        self.board[i][j].resident += 1
 
     def simulate_traffic(self):
-        street_row = 11
+        car_position = 11
         self.right = True
         for i in range(30):
             if self.right == True:    
                 for j in range(30):                   
-                    if self.drivetime != 0:
-                        if isinstance(self.board[self.drivetime-1][street_row], Street):
-                            self.board[self.drivetime][street_row] = Car()
-                            self.board[self.drivetime-1][street_row] = Street()  
+                    if self.car_step != 0:
+                        if isinstance(self.board[self.car_step-1][car_position], Street):
+                            self.board[self.car_step][car_position] = Car()
+                            self.board[self.car_step-1][car_position] = Street()
                         else:
-                            self.board[self.drivetime-1][street_row] = Street()
-                            self.board[self.drivetime][street_row-1] = Car()
-                            self.board[self.drivetime][street_row-1] = Street()
-                            street_row -= 1
-                    if self.drivetime == 29:
+                            self.board[self.car_step-1][car_position] = Street()
+                            self.board[self.car_step][car_position-1] = Car()
+                            self.board[self.car_step][car_position-1] = Street()
+                            car_position -= 1
+                    if self.car_step == 29:
                         self.right = False
-                        self.drivetime = 0
+                        self.car_step = 0
                         
     def check_population_safety(self):
         pass        

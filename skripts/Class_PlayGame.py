@@ -21,14 +21,14 @@ class PlayGame(Game):
     def play_winterthur_map(self):
         self.load_winterthur_map()
         self.counter = 0
-        self.drivetime = 0
+        self.car_step = 0
         listener = keyboard.Listener(on_press=self.on_press)
         listener.start()
 
         while self.running:
             os.system("clear")
             self.display_board()
-            self.drivetime += 1
+            self.car_step += 1
             self.counter += 1
             print()
             print("Generation: ", self.counter, "  House(☖), Business(*), Water(~), Land(.), Car(🝞), Street(=)")
@@ -43,7 +43,7 @@ class PlayGame(Game):
     def play_random_map(self):
         self.load_random_city()
         self.counter = 0
-        self.drivetime = 0
+        self.car_step = 0
         
         listener = keyboard.Listener(on_press=self.on_press)
         listener.start()
@@ -51,7 +51,7 @@ class PlayGame(Game):
         while self.running:
             os.system("clear")
             self.display_board()
-            self.drivetime += 1
+            self.car_step += 1
             self.counter += 1
             print()
             print("Generation: ", self.counter, "  House(☖), Business(⌷), Water(~), Land(.), Car(🝞), Street(=)")
