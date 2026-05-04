@@ -127,3 +127,136 @@ def test_load_winterthur_map():
     assert len(game.board) == 30
     assert len(game.board[0]) == 30
     assert isinstance(game.board[0][0], (Field, Street, House, Business, Water, Car))
+
+
+#---------------------------------------------------------------------------------------------
+# Tests for Play.py
+import builtins
+from skripts.Class_PlayGame import PlayGame
+
+
+# Equivalence class 1: user selects Winterthur map (input = 1)
+def test_user_choice_winterthur(monkeypatch):
+    calls = {"winterthur": False, "random": False}
+
+    def mock_input(prompt):
+        return "1"
+
+    def mock_play_winterthur(self):
+        calls["winterthur"] = True
+
+    def mock_play_random(self):
+        calls["random"] = True
+
+    monkeypatch.setattr(builtins, "input", mock_input)
+    monkeypatch.setattr(PlayGame, "play_winterthur_map", mock_play_winterthur)
+    monkeypatch.setattr(PlayGame, "play_random_map", mock_play_random)
+
+    import skripts.Play
+
+    assert calls["winterthur"] is True
+    assert calls["random"] is False
+
+
+# Equivalence class 2: user selects random map (input = 2)
+def test_user_choice_random(monkeypatch):
+    calls = {"winterthur": False, "random": False}
+
+    def mock_input(prompt):
+        return "2"
+
+    def mock_play_winterthur(self):
+        calls["winterthur"] = True
+
+    def mock_play_random(self):
+        calls["random"] = True
+
+    monkeypatch.setattr(builtins, "input", mock_input)
+    monkeypatch.setattr(PlayGame, "play_winterthur_map", mock_play_winterthur)
+    monkeypatch.setattr(PlayGame, "play_random_map", mock_play_random)
+
+    import skripts.Play
+
+    assert calls["winterthur"] is False
+    assert calls["random"] is True
+
+
+# Equivalence class 3: invalid input (not 1 or 2)
+def test_user_choice_invalid(monkeypatch):
+    calls = {"winterthur": False, "random": False}
+
+    def mock_input(prompt):
+        return "3"
+
+    def mock_play_winterthur(self):
+        calls["winterthur"] = True
+
+    def mock_play_random(self):
+        calls["random"] = True
+
+    monkeypatch.setattr(builtins, "input", mock_input)
+    monkeypatch.setattr(PlayGame, "play_winterthur_map", mock_play_winterthur)
+    monkeypatch.setattr(PlayGame, "play_random_map", mock_play_random)
+
+    import skripts.Play
+
+    assert calls["winterthur"] is False
+    assert calls["random"] is False
+
+
+
+
+#---------------------------------------------------------------------------------------------
+# Tests for Class_File.py
+
+import pytest
+from skripts.Class_File import File 
+
+# Equivalence class 1: file contains commas → commas should be removed
+def test_remove_commas_basic(tmp_path):
+    test_file = tmp_path / "test.txt"
+    test_file.write_text("Hello,World,Test")
+
+    File.remove_commas(test_file)
+
+    content = test_file.read_text()
+    assert content == "HelloWorldTest"
+
+
+# Equivalence class 2: file contains no commas → content unchanged
+def test_remove_commas_no_commas(tmp_path):
+    test_file = tmp_path / "test.txt"
+    test_file.write_text("Hello World Test")
+
+    File.remove_commas(test_file)
+
+    content = test_file.read_text()
+    assert content == "Hello World Test"
+
+
+# Equivalence class 3: empty file → stays empty
+def test_remove_commas_empty_file(tmp_path):
+    test_file = tmp_path / "test.txt"
+    test_file.write_text("")
+
+    File.remove_commas(test_file)
+
+    content = test_file.read_text()
+    assert content == ""
+
+
+# Equivalence class 4: file with only commas → becomes empty
+def test_remove_commas_only_commas(tmp_path):
+    test_file = tmp_path / "test.txt"
+    test_file.write_text(",,,")
+
+    File.remove_commas(test_file)
+
+    content = test_file.read_text()
+    assert content == ""
+
+
+# Equivalence class 5: file does not exist → should raise error
+def test_remove_commas_file_not_found():
+    with pytest.raises(FileNotFoundError):
+        File.remove_commas("non_existent_file.txt")

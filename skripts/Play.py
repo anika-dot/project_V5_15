@@ -1,4 +1,4 @@
-from Class_PlayGame import PlayGame
+from skripts.Class_PlayGame import PlayGame
 
 user_choice = int(input("Mit welcher Karte möchten Sie weiterfahren?\
                                      \n 1:Winterthur\
