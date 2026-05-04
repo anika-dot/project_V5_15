@@ -19,11 +19,9 @@ class PlayGame(Game):
   
  
     def play_winterthur_map(self):
-        # Spiel mit Karte von Winterthur
         self.load_winterthur_map()
         self.counter = 0
         self.car_step = 0
-        
         listener = keyboard.Listener(on_press=self.on_press)
         listener.start()
 
@@ -43,7 +41,6 @@ class PlayGame(Game):
         listener.stop()   
 
     def play_random_map(self):
-        # Spiel mit zufälligem Spielfeld
         self.load_random_city()
         self.counter = 0
         self.car_step = 0
