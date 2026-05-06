@@ -7,6 +7,13 @@ __pycache__/
 # Data files (NumPy arrays)
 *.npy
 
+# Files created due to profiling/flamegraph
+FlameGraph/
+firstFlamegraph.PNG
+*.prof
+*.svg
+*.folded
+
 # Optional: Images/Assets
 # (Uncomment the line below if you want to ignore the whole pics folder)
 # pics/
