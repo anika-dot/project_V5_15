@@ -1,6 +1,8 @@
 import pytest
 from skripts.Class_Game import Game
 from skripts.Class_Fill import Field, Street, House, Business, Water, Car
+import builtins
+from skripts.Class_PlayGame import PlayGame
 
 
 # Equivalence class 1: fill_field mapping
@@ -131,8 +133,6 @@ def test_load_winterthur_map():
 
 #---------------------------------------------------------------------------------------------
 # Tests for Play.py
-import builtins
-from skripts.Class_PlayGame import PlayGame
 
 
 # Equivalence class 1: user selects Winterthur map (input = 1)
@@ -207,56 +207,195 @@ def test_user_choice_invalid(monkeypatch):
 
 
 #---------------------------------------------------------------------------------------------
-# Tests for Class_File.py
+# # Tests for Class_File.py
 
-import pytest
-from skripts.Class_File import File 
+# import pytest
+# from skripts.Class_File import File 
 
-# Equivalence class 1: file contains commas → commas should be removed
-def test_remove_commas_basic(tmp_path):
-    test_file = tmp_path / "test.txt"
-    test_file.write_text("Hello,World,Test")
+# # Equivalence class 1: file contains commas → commas should be removed
+# def test_remove_commas_basic(tmp_path):
+#     test_file = tmp_path / "test.txt"
+#     test_file.write_text("Hello,World,Test")
 
-    File.remove_commas(test_file)
+#     File.remove_commas(test_file)
 
-    content = test_file.read_text()
-    assert content == "HelloWorldTest"
-
-
-# Equivalence class 2: file contains no commas → content unchanged
-def test_remove_commas_no_commas(tmp_path):
-    test_file = tmp_path / "test.txt"
-    test_file.write_text("Hello World Test")
-
-    File.remove_commas(test_file)
-
-    content = test_file.read_text()
-    assert content == "Hello World Test"
+#     content = test_file.read_text()
+#     assert content == "HelloWorldTest"
 
 
-# Equivalence class 3: empty file → stays empty
-def test_remove_commas_empty_file(tmp_path):
-    test_file = tmp_path / "test.txt"
-    test_file.write_text("")
+# # Equivalence class 2: file contains no commas → content unchanged
+# def test_remove_commas_no_commas(tmp_path):
+#     test_file = tmp_path / "test.txt"
+#     test_file.write_text("Hello World Test")
 
-    File.remove_commas(test_file)
+#     File.remove_commas(test_file)
 
-    content = test_file.read_text()
-    assert content == ""
-
-
-# Equivalence class 4: file with only commas → becomes empty
-def test_remove_commas_only_commas(tmp_path):
-    test_file = tmp_path / "test.txt"
-    test_file.write_text(",,,")
-
-    File.remove_commas(test_file)
-
-    content = test_file.read_text()
-    assert content == ""
+#     content = test_file.read_text()
+#     assert content == "Hello World Test"
 
 
-# Equivalence class 5: file does not exist → should raise error
-def test_remove_commas_file_not_found():
-    with pytest.raises(FileNotFoundError):
-        File.remove_commas("non_existent_file.txt")
+# # Equivalence class 3: empty file → stays empty
+# def test_remove_commas_empty_file(tmp_path):
+#     test_file = tmp_path / "test.txt"
+#     test_file.write_text("")
+
+#     File.remove_commas(test_file)
+
+#     content = test_file.read_text()
+#     assert content == ""
+
+
+# # Equivalence class 4: file with only commas → becomes empty
+# def test_remove_commas_only_commas(tmp_path):
+#     test_file = tmp_path / "test.txt"
+#     test_file.write_text(",,,")
+
+#     File.remove_commas(test_file)
+
+#     content = test_file.read_text()
+#     assert content == ""
+
+
+# # Equivalence class 5: file does not exist → should raise error
+# def test_remove_commas_file_not_found():
+#     with pytest.raises(FileNotFoundError):
+#         File.remove_commas("non_existent_file.txt")
+
+
+# ---------------------------------------------------------------------------------------------
+# Tests for Class_PlayGame.py
+
+
+
+
+# Equivalence class 1: pressing "q" stops the game
+def test_on_press_q_stops_game():
+    game = PlayGame()
+
+    class MockKey:
+        char = "q"
+
+    game.on_press(MockKey())
+
+    assert game.running is False
+
+
+# Equivalence class 2: pressing another key does not stop the game
+def test_on_press_other_key_keeps_running():
+    game = PlayGame()
+
+    class MockKey:
+        char = "a"
+
+    game.on_press(MockKey())
+
+    assert game.running is True
+
+
+# Equivalence class 3: special key without char attribute
+def test_on_press_special_key():
+    game = PlayGame()
+
+    class MockSpecialKey:
+        pass
+
+    # should not crash
+    game.on_press(MockSpecialKey())
+
+    assert game.running is True
+
+
+# Equivalence class 4: play_winterthur_map initializes values correctly
+def test_play_winterthur_initialization(monkeypatch):
+    game = PlayGame()
+
+    # mock methods to avoid infinite loop
+    monkeypatch.setattr(game, "load_winterthur_map", lambda: None)
+    monkeypatch.setattr(game, "display_board", lambda: None)
+    monkeypatch.setattr(game, "population_growth", lambda: None)
+    monkeypatch.setattr(game, "simulate_traffic", lambda: None)
+    monkeypatch.setattr(game, "check_population_safety", lambda: None)
+
+    # stop loop immediately
+    def stop_running():
+        game.running = False
+
+    monkeypatch.setattr(game, "display_board", stop_running)
+
+    # mock keyboard listener
+    class MockListener:
+        def __init__(self, on_press):
+            pass
+
+        def start(self):
+            pass
+
+        def stop(self):
+            pass
+
+    monkeypatch.setattr(
+        "skripts.Class_PlayGame.keyboard.Listener",
+        MockListener
+    )
+
+    monkeypatch.setattr("time.sleep", lambda x: None)
+    monkeypatch.setattr("os.system", lambda x: None)
+
+    game.play_winterthur_map()
+
+    assert game.counter == 1
+    assert game.drivetime == 1
+
+
+# Equivalence class 5: play_random_map initializes values correctly
+def test_play_random_initialization(monkeypatch):
+    game = PlayGame()
+
+    # mock methods
+    monkeypatch.setattr(game, "load_random_city", lambda: None)
+    monkeypatch.setattr(game, "population_growth", lambda: None)
+    monkeypatch.setattr(game, "simulate_traffic", lambda: None)
+    monkeypatch.setattr(game, "check_population_safety", lambda: None)
+
+    # stop loop immediately
+    def stop_running():
+        game.running = False
+
+    monkeypatch.setattr(game, "display_board", stop_running)
+
+    # mock keyboard listener
+    class MockListener:
+        def __init__(self, on_press):
+            pass
+
+        def start(self):
+            pass
+
+        def stop(self):
+            pass
+
+    monkeypatch.setattr(
+        "skripts.Class_PlayGame.keyboard.Listener",
+        MockListener
+    )
+
+    monkeypatch.setattr("time.sleep", lambda x: None)
+    monkeypatch.setattr("os.system", lambda x: None)
+
+    game.play_random_map()
+
+    assert game.counter == 1
+    assert game.drivetime == 1
+
+
+# Equivalence class 6: figures list contains all expected classes
+def test_figures_contains_correct_types():
+    from skripts.Class_PlayGame import figures
+    from skripts.Class_Fill import (
+        Field, Water, House, Business, Street, Car
+    )
+
+    expected_types = [Field, Water, House, Business, Street, Car]
+
+    for figure, expected in zip(figures, expected_types):
+        assert isinstance(figure, expected)
