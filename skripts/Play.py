@@ -1,10 +1,13 @@
-import cProfile
-import pstats
+import cProfile     #for profiling
+import pstats       #for saving profiling data
 from Class_PlayGame import PlayGame
 
 
 def start_simulation():
-    """Starting the Game of Life Simulation with user input"""
+    """
+    Starts the Game of Life simulation with user input.
+    Unser input "1": uses the winterthur map. User input "2" uses a randomly generated map.
+    """
 
     user_choice = int(input("Mit welcher Karte möchten Sie weiterfahren?\
                                          \n 1:Winterthur\
@@ -25,7 +28,7 @@ if __name__ == "__main__":
     profiler = cProfile.Profile()
 
     try:
-        # Starting the recording and running the function
+        # Starting the recording and running the simulation
         profiler.enable()
         start_simulation()
     except KeyboardInterrupt:
