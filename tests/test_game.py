@@ -1,12 +1,15 @@
+import builtins
 import pytest
 from skripts.Class_Game import Game
 from skripts.Class_Fill import Field, Street, House, Business, Water, Car
-import builtins
 from skripts.Class_PlayGame import PlayGame
 
 
 # Equivalence class 1: fill_field mapping
 def test_fill_field_creates_field():
+    '''
+    Test that fill_field creates the correct object type based on the input character.
+    '''
     game = Game()
     game.lines = ["G"]
     game.board = [[]]
@@ -17,6 +20,8 @@ def test_fill_field_creates_field():
 
 
 def test_fill_field_creates_street():
+    '''
+    Test that fill_field creates a Street object when the input character is "S".'''
     game = Game()
     game.lines = ["S"]
     game.board = [[]]
@@ -27,6 +32,8 @@ def test_fill_field_creates_street():
 
 
 def test_fill_field_creates_house():
+    '''
+    Test that fill_field creates a House object when the input character is "R".'''
     game = Game()
     game.lines = ["R"]
     game.board = [[]]
@@ -38,6 +45,8 @@ def test_fill_field_creates_house():
 
 # Equivalence class 2: population growth
 def test_population_growth_increases_population():
+    '''
+    Test that population_growth increases the number of inhabitants in a house with at least 1 inhabitant.'''
     game = Game()
     house = House()
     house.bewohner = 1
@@ -52,6 +61,9 @@ def test_population_growth_increases_population():
 
 # Equivalence class 3: edge case - house dies
 def test_population_house_turns_into_field():
+    '''
+    Test that a house with 0 inhabitants turns into a Field.
+    '''
     game = Game()
     house = House()
     house.bewohner = 0
@@ -65,6 +77,9 @@ def test_population_house_turns_into_field():
 
 # Equivalence class 4: edge case - empty board
 def test_population_growth_empty_board():
+    '''
+    Test that population_growth does not crash on an empty board.
+    '''
     game = Game()
     game.board = []
 
@@ -74,14 +89,13 @@ def test_population_growth_empty_board():
 
 # Equivalence class 5: traffic simulation (deterministic!)
 def test_simulate_traffic_places_car_on_street():
+    '''
+    Test that simulate_traffic places a Car on a Street cell after one drivetime.
+    '''
     game = Game()
-
     game.board = [[Street() for _ in range(30)] for _ in range(30)]
-
     game.drivetime = 1
-
     game.simulate_traffic()
-
     found_car = any(isinstance(cell, Car) for row in game.board for cell in row)
 
     assert found_car
@@ -89,6 +103,9 @@ def test_simulate_traffic_places_car_on_street():
 
 # Equivalence class 6: display output
 def test_display_board_prints_character(capsys):
+    '''
+    Test that display_board prints the expected character for a Field cell.
+    '''
     game = Game()
     game.board = [[Field()]]
 
@@ -101,6 +118,9 @@ def test_display_board_prints_character(capsys):
 
 # Equivalence class 7: deterministic random city
 def test_random_city_deterministic(monkeypatch):
+    '''
+    Test that load_random_city creates a board of Fields when random is forced to return 0.
+    '''
     game = Game()
 
     # force random to always return 0 → always Field
@@ -115,6 +135,9 @@ def test_random_city_deterministic(monkeypatch):
 
 # Equivalence class 8: invalid input handling
 def test_population_with_invalid_cell_raises():
+    '''
+    Test that population_growth raises an error if the board contains an invalid cell type (e.g. None).
+    '''
     game = Game()
     game.board = [[None]]
 
@@ -124,6 +147,9 @@ def test_population_with_invalid_cell_raises():
 
 # Equivalence class 9: load board from file
 def test_load_winterthur_map():
+    '''
+    Test that load_winterthur_map loads a 30x30 board with valid cell types.
+    '''
     game = Game()
     game.load_winterthur_map()
     assert len(game.board) == 30
@@ -131,12 +157,14 @@ def test_load_winterthur_map():
     assert isinstance(game.board[0][0], (Field, Street, House, Business, Water, Car))
 
 
-#---------------------------------------------------------------------------------------------
-# Tests for Play.py
+# Tests for Play.py ---------------------------------------------------------------------------------------------
 
 
 # Equivalence class 1: user selects Winterthur map (input = 1)
 def test_user_choice_winterthur(monkeypatch):
+    '''
+    Test that selecting "1" calls play_winterthur_map and not play_random_map.
+    '''
     calls = {"winterthur": False, "random": False}
 
     def mock_input(prompt):
@@ -160,6 +188,9 @@ def test_user_choice_winterthur(monkeypatch):
 
 # Equivalence class 2: user selects random map (input = 2)
 def test_user_choice_random(monkeypatch):
+    '''
+    Test that selecting "2" calls play_random_map and not play_winterthur_map.
+    '''
     calls = {"winterthur": False, "random": False}
 
     def mock_input(prompt):
@@ -183,6 +214,9 @@ def test_user_choice_random(monkeypatch):
 
 # Equivalence class 3: invalid input (not 1 or 2)
 def test_user_choice_invalid(monkeypatch):
+    '''
+    Test that invalid input does not call either play_winterthur_map or play_random_map.
+    '''
     calls = {"winterthur": False, "random": False}
 
     def mock_input(prompt):
@@ -205,71 +239,14 @@ def test_user_choice_invalid(monkeypatch):
 
 
 
-
-#---------------------------------------------------------------------------------------------
-# # Tests for Class_File.py
-
-# import pytest
-# from skripts.Class_File import File 
-
-# # Equivalence class 1: file contains commas → commas should be removed
-# def test_remove_commas_basic(tmp_path):
-#     test_file = tmp_path / "test.txt"
-#     test_file.write_text("Hello,World,Test")
-
-#     File.remove_commas(test_file)
-
-#     content = test_file.read_text()
-#     assert content == "HelloWorldTest"
+# Tests for Class_PlayGame.py---------------------------------------------------------------------------------------------
 
 
-# # Equivalence class 2: file contains no commas → content unchanged
-# def test_remove_commas_no_commas(tmp_path):
-#     test_file = tmp_path / "test.txt"
-#     test_file.write_text("Hello World Test")
-
-#     File.remove_commas(test_file)
-
-#     content = test_file.read_text()
-#     assert content == "Hello World Test"
-
-
-# # Equivalence class 3: empty file → stays empty
-# def test_remove_commas_empty_file(tmp_path):
-#     test_file = tmp_path / "test.txt"
-#     test_file.write_text("")
-
-#     File.remove_commas(test_file)
-
-#     content = test_file.read_text()
-#     assert content == ""
-
-
-# # Equivalence class 4: file with only commas → becomes empty
-# def test_remove_commas_only_commas(tmp_path):
-#     test_file = tmp_path / "test.txt"
-#     test_file.write_text(",,,")
-
-#     File.remove_commas(test_file)
-
-#     content = test_file.read_text()
-#     assert content == ""
-
-
-# # Equivalence class 5: file does not exist → should raise error
-# def test_remove_commas_file_not_found():
-#     with pytest.raises(FileNotFoundError):
-#         File.remove_commas("non_existent_file.txt")
-
-
-# ---------------------------------------------------------------------------------------------
-# Tests for Class_PlayGame.py
-
-
-
-
-# Equivalence class 1: pressing "q" stops the game
+# Equivalence class 1: pressing "q"
 def test_on_press_q_stops_game():
+    '''
+    Test that pressing "q" stops the game.
+    '''
     game = PlayGame()
 
     class MockKey:
@@ -280,8 +257,11 @@ def test_on_press_q_stops_game():
     assert game.running is False
 
 
-# Equivalence class 2: pressing another key does not stop the game
-def test_on_press_other_key_keeps_running():
+# Equivalence class 2: pressing another key
+def test_on_press_other_key_keeps_game_running():
+    '''
+    Test that pressing another key does not stop the game.
+    '''
     game = PlayGame()
 
     class MockKey:
@@ -293,36 +273,37 @@ def test_on_press_other_key_keeps_running():
 
 
 # Equivalence class 3: special key without char attribute
-def test_on_press_special_key():
+def test_on_press_special_key_does_not_crash():
+    '''
+    Test that pressing a special key without a char attribute does not crash the game.
+    '''
     game = PlayGame()
 
     class MockSpecialKey:
         pass
 
-    # should not crash
     game.on_press(MockSpecialKey())
 
     assert game.running is True
 
 
-# Equivalence class 4: play_winterthur_map initializes values correctly
-def test_play_winterthur_initialization(monkeypatch):
+# Equivalence class 4: play_winterthur_map initialization
+def test_play_winterthur_map_initializes_values(monkeypatch):
+    '''
+    Test that play_winterthur_map initializes counter and drivetime correctly.
+    '''
     game = PlayGame()
 
-    # mock methods to avoid infinite loop
     monkeypatch.setattr(game, "load_winterthur_map", lambda: None)
-    monkeypatch.setattr(game, "display_board", lambda: None)
     monkeypatch.setattr(game, "population_growth", lambda: None)
     monkeypatch.setattr(game, "simulate_traffic", lambda: None)
     monkeypatch.setattr(game, "check_population_safety", lambda: None)
 
-    # stop loop immediately
-    def stop_running():
+    def mock_display_board():
         game.running = False
 
-    monkeypatch.setattr(game, "display_board", stop_running)
+    monkeypatch.setattr(game, "display_board", mock_display_board)
 
-    # mock keyboard listener
     class MockListener:
         def __init__(self, on_press):
             pass
@@ -347,23 +328,23 @@ def test_play_winterthur_initialization(monkeypatch):
     assert game.drivetime == 1
 
 
-# Equivalence class 5: play_random_map initializes values correctly
-def test_play_random_initialization(monkeypatch):
+# Equivalence class 5: play_random_map initialization
+def test_play_random_map_initializes_values(monkeypatch):
+    '''
+    Test that play_random_map initializes counter and drivetime correctly.
+    '''
     game = PlayGame()
 
-    # mock methods
     monkeypatch.setattr(game, "load_random_city", lambda: None)
     monkeypatch.setattr(game, "population_growth", lambda: None)
     monkeypatch.setattr(game, "simulate_traffic", lambda: None)
     monkeypatch.setattr(game, "check_population_safety", lambda: None)
 
-    # stop loop immediately
-    def stop_running():
+    def mock_display_board():
         game.running = False
 
-    monkeypatch.setattr(game, "display_board", stop_running)
+    monkeypatch.setattr(game, "display_board", mock_display_board)
 
-    # mock keyboard listener
     class MockListener:
         def __init__(self, on_press):
             pass
@@ -388,14 +369,21 @@ def test_play_random_initialization(monkeypatch):
     assert game.drivetime == 1
 
 
-# Equivalence class 6: figures list contains all expected classes
-def test_figures_contains_correct_types():
+# Equivalence class 6: figures list content
+def test_figures_contains_correct_classes():
+    '''
+    Test that figures contains the expected object types in the correct order.
+    '''
     from skripts.Class_PlayGame import figures
-    from skripts.Class_Fill import (
-        Field, Water, House, Business, Street, Car
-    )
 
-    expected_types = [Field, Water, House, Business, Street, Car]
+    expected_types = [
+        Field,
+        Water,
+        House,
+        Business,
+        Street,
+        Car
+    ]
 
-    for figure, expected in zip(figures, expected_types):
-        assert isinstance(figure, expected)
+    for figure, expected_type in zip(figures, expected_types):
+        assert isinstance(figure, expected_type)
