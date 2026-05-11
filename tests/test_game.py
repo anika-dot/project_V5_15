@@ -3,6 +3,8 @@ import pytest
 from skripts.Class_Game import Game
 from skripts.Class_Fill import Field, Street, House, Business, Water, Car
 from skripts.Class_PlayGame import PlayGame
+from skripts.Class_PlayGame import figures
+
 
 
 # Equivalence class 1: fill_field mapping
@@ -21,7 +23,8 @@ def test_fill_field_creates_field():
 
 def test_fill_field_creates_street():
     '''
-    Test that fill_field creates a Street object when the input character is "S".'''
+    Test that fill_field creates a Street object when the input character is "S".
+    '''
     game = Game()
     game.lines = ["S"]
     game.board = [[]]
@@ -33,7 +36,8 @@ def test_fill_field_creates_street():
 
 def test_fill_field_creates_house():
     '''
-    Test that fill_field creates a House object when the input character is "R".'''
+    Test that fill_field creates a House object when the input character is "R".
+    '''
     game = Game()
     game.lines = ["R"]
     game.board = [[]]
@@ -46,7 +50,9 @@ def test_fill_field_creates_house():
 # Equivalence class 2: population growth
 def test_population_growth_increases_population():
     '''
-    Test that population_growth increases the number of inhabitants in a house with at least 1 inhabitant.'''
+    Test that population_growth increases the number of inhabitants
+    in a house with at least 1 inhabitant.
+    '''
     game = Game()
     house = House()
     house.bewohner = 1
@@ -136,7 +142,8 @@ def test_random_city_deterministic(monkeypatch):
 # Equivalence class 8: invalid input handling
 def test_population_with_invalid_cell_raises():
     '''
-    Test that population_growth raises an error if the board contains an invalid cell type (e.g. None).
+    Test that population_growth raises an error,
+    if the board contains an invalid cell type (e.g. None).
     '''
     game = Game()
     game.board = [[None]]
@@ -157,7 +164,7 @@ def test_load_winterthur_map():
     assert isinstance(game.board[0][0], (Field, Street, House, Business, Water, Car))
 
 
-# Tests for Play.py ---------------------------------------------------------------------------------------------
+# Tests for Play.py ---------------------------------------
 
 
 # Equivalence class 1: user selects Winterthur map (input = 1)
@@ -204,9 +211,7 @@ def test_user_choice_random(monkeypatch):
 
     monkeypatch.setattr(builtins, "input", mock_input)
     monkeypatch.setattr(PlayGame, "play_winterthur_map", mock_play_winterthur)
-    monkeypatch.setattr(PlayGame, "play_random_map", mock_play_random)
-
-    import skripts.Play
+    monkeypatch.setattr(PlayGame, "play_random_map", mock_play_random) 
 
     assert calls["winterthur"] is False
     assert calls["random"] is True
@@ -239,7 +244,7 @@ def test_user_choice_invalid(monkeypatch):
 
 
 
-# Tests for Class_PlayGame.py---------------------------------------------------------------------------------------------
+# Tests for Class_PlayGame.py---------------------------------------
 
 
 # Equivalence class 1: pressing "q"
@@ -250,6 +255,8 @@ def test_on_press_q_stops_game():
     game = PlayGame()
 
     class MockKey:
+        '''
+        Mock key with a char attribute that is "q", to test that on_press sets running to False.'''
         char = "q"
 
     game.on_press(MockKey())
@@ -265,6 +272,10 @@ def test_on_press_other_key_keeps_game_running():
     game = PlayGame()
 
     class MockKey:
+        '''
+        Mock key with a char attribute that is not "q", 
+        to test that on_press does not stop the game.
+        '''
         char = "a"
 
     game.on_press(MockKey())
@@ -280,6 +291,9 @@ def test_on_press_special_key_does_not_crash():
     game = PlayGame()
 
     class MockSpecialKey:
+        '''
+        Mock special key that does not have a char attribute,
+        to test that on_press handles it gracefully.'''
         pass
 
     game.on_press(MockSpecialKey())
@@ -305,13 +319,21 @@ def test_play_winterthur_map_initializes_values(monkeypatch):
     monkeypatch.setattr(game, "display_board", mock_display_board)
 
     class MockListener:
+        '''
+        Mock keyboard listener that does nothing, but is needed for testing.'''
         def __init__(self, on_press):
             pass
 
         def start(self):
+            '''
+            Mock start method that does nothing, but is needed for testing.
+            '''
             pass
 
         def stop(self):
+            '''
+            Mock stop method that does nothing, but is needed for testing.
+            '''
             pass
 
     monkeypatch.setattr(
@@ -346,13 +368,22 @@ def test_play_random_map_initializes_values(monkeypatch):
     monkeypatch.setattr(game, "display_board", mock_display_board)
 
     class MockListener:
+        '''
+        Mock keyboard listener that does nothing, but is needed for testing.
+        '''
         def __init__(self, on_press):
             pass
 
         def start(self):
+            '''
+            Mock start method that does nothing, but is needed for testing.
+            '''
             pass
 
         def stop(self):
+            ''''
+            Mock stop method that does nothing, but is needed for testing.
+            '''
             pass
 
     monkeypatch.setattr(
@@ -374,8 +405,6 @@ def test_figures_contains_correct_classes():
     '''
     Test that figures contains the expected object types in the correct order.
     '''
-    from skripts.Class_PlayGame import figures
-
     expected_types = [
         Field,
         Water,
