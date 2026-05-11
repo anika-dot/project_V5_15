@@ -9,19 +9,6 @@ class Game:
         self.board = []
             
     def load_winterthur_map(self):
-        # Hier wird die Karte von Winterthur geladen
-        
-        # f = open("Winterthur_neu.txt","r")
-        #f = open(r"C:\Users\anika\OneDrive\Desktop\ZHAW_Master\Developing_Software_as_a_Product\Project\project_V5_15\Winterthur_neu.txt", "r")
-        #self.lines = f.readlines()
-        #f.close()
-        #self.lines = [line.rstrip('\n') for line in self.lines]
-        
-        #for line in range(len(self.lines)):
-        #    self.board.append([])
-        #    for j in range(len(self.lines[0])):
-        #        self.fill_field(line,j)
-        
         file_path = Path(__file__).parent / "Winterthur_neu.txt"
     
         f = open(file_path, "r", encoding="utf-8")
@@ -30,7 +17,6 @@ class Game:
         f.close()
 
         self.lines = [line.rstrip('\n') for line in self.lines]
-    
         for line in range(len(self.lines)):
             self.board.append([])
             for j in range(len(self.lines[0])):
@@ -38,7 +24,6 @@ class Game:
 
                 
     def fill_field(self,i,j):
-        # Hier wird das Spielbrett gefüllt
         if self.lines[i][j] == "G":
             self.board[i].append(Field()) 
         elif self.lines[i][j] == "S":
@@ -53,57 +38,55 @@ class Game:
             self.board[i].append(Car())
      
     def load_random_city(self):
-        # Hier wird eine zufällige Karte geladen
         self.board = [[(figures[random.randrange(5)]) for x in range(30)] for y in range(30)]
         np.save("random_map.npy", self.board)
-        
-    def display_board(self):        
+
+    def display_board(self):
+        output = []
         for i in range(len(self.board)):
-          for j in range(len(self.board[0])):
-              print(self.board[i][j].character,end = "")
-          print()
+            line = "".join([self.board[i][j].character for j in range(len(self.board[0]))])
+            output.append(line)
+        print("\n".join(output))
 
     def population_growth(self):
-        # Bewohner werden hinzugefügt und sie sterben
-        tempi = -1
-        tempj = -1
+        temp_row = -1
+        temp_col = -1
         for i in range(len(self.board)):
             for j in range(len(self.board[0])):                
                 if isinstance(self.board[i][j], Field):
-                    tempi = i
-                    tempj = j    
+                    temp_row = i
+                    temp_col = j    
                 if isinstance(self.board[i][j], House):
-                    self.board[i][j].bewohner -= 0.5     #Sterberate
+                    # death rate applied each generation
+                    self.board[i][j].resident -= 0.5
+
+                    # create new house on nearest empty field when population reaches threshold
+                    if self.board[i][j].resident == 5 and temp_row >= 0:
+                        self.board[temp_row][temp_col] = House()
                         
-                    if self.board[i][j].bewohner == 5 and tempi >= 0:
-                        self.board[tempi][tempj] = House()
-                        
-                    if self.board[i][j].bewohner == 0:
+                    if self.board[i][j].resident == 0:
                         self.board[i][j] = Field()
                     else:
-                        self.board[i][j].bewohner += 1
+                        self.board[i][j].resident += 1
 
     def simulate_traffic(self):
-        # Auto kann auf den Strassen fahren
-        y = 11
+        car_position = 11
         self.right = True
         for i in range(30):
             if self.right == True:    
                 for j in range(30):                   
-                    #self.board[self.drivetime][y] = Car() #Auto wird gesetzt 
-                    if self.drivetime != 0:
-                        #if self.lines [self.drivetime-1][y] == "S":
-                        if isinstance(self.board[self.drivetime-1][y], Street):
-                            self.board[self.drivetime][y] = Car()
-                            self.board[self.drivetime-1][y] = Street()  #Strasse zieht mit
+                    if self.car_step != 0:
+                        if isinstance(self.board[self.car_step-1][car_position], Street):
+                            self.board[self.car_step][car_position] = Car()
+                            self.board[self.car_step-1][car_position] = Street()
                         else:
-                            self.board[self.drivetime-1][y] = Street()
-                            self.board[self.drivetime][y-1] = Car()
-                            self.board[self.drivetime][y-1] = Street()
-                            y -= 1
-                    if self.drivetime == 29:
+                            self.board[self.car_step-1][car_position] = Street()
+                            self.board[self.car_step][car_position-1] = Car()
+                            self.board[self.car_step][car_position-1] = Street()
+                            car_position -= 1
+                    if self.car_step == 29:
                         self.right = False
-                        self.drivetime = 0
+                        self.car_step = 0
                         
     def check_population_safety(self):
         pass        

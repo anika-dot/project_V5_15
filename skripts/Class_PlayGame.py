@@ -19,18 +19,21 @@ class PlayGame(Game):
   
  
     def play_winterthur_map(self):
-        # Spiel mit Karte von Winterthur
         self.load_winterthur_map()
         self.counter = 0
-        self.drivetime = 0
-        
+        self.car_step = 0
         listener = keyboard.Listener(on_press=self.on_press)
         listener.start()
 
+        # Clear once at the very start (cross-platform)
+        os.system('cls' if os.name == 'nt' else 'clear')
+
         while self.running:
-            os.system("clear")
+            # Move cursor to top-left instead of clearing
+            print("\033[H", end="")
+            #os.system("clear")
             self.display_board()
-            self.drivetime += 1
+            self.car_step += 1
             self.counter += 1
             print()
             print("Generation: ", self.counter, "  House(☖), Business(*), Water(~), Land(.), Car(🝞), Street(=)")
@@ -43,18 +46,22 @@ class PlayGame(Game):
         listener.stop()   
 
     def play_random_map(self):
-        # Spiel mit zufälligem Spielfeld
         self.load_random_city()
         self.counter = 0
-        self.drivetime = 0
+        self.car_step = 0
         
         listener = keyboard.Listener(on_press=self.on_press)
         listener.start()
-        
+
+        # Clear once at the very start (cross-platform)
+        os.system('cls' if os.name == 'nt' else 'clear')
+
         while self.running:
-            os.system("clear")
+            # Move cursor to top-left instead of clearing
+            print("\033[H", end="")
+            #os.system("clear")
             self.display_board()
-            self.drivetime += 1
+            self.car_step += 1
             self.counter += 1
             print()
             print("Generation: ", self.counter, "  House(☖), Business(⌷), Water(~), Land(.), Car(🝞), Street(=)")
