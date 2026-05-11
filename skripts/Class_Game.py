@@ -40,12 +40,13 @@ class Game:
     def load_random_city(self):
         self.board = [[(figures[random.randrange(5)]) for x in range(30)] for y in range(30)]
         np.save("random_map.npy", self.board)
-        
-    def display_board(self):        
+
+    def display_board(self):
+        output = []
         for i in range(len(self.board)):
-          for j in range(len(self.board[0])):
-              print(self.board[i][j].character,end = "")
-          print()
+            line = "".join([self.board[i][j].character for j in range(len(self.board[0]))])
+            output.append(line)
+        print("\n".join(output))
 
     def population_growth(self):
         temp_row = -1
