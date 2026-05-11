@@ -25,8 +25,13 @@ class PlayGame(Game):
         listener = keyboard.Listener(on_press=self.on_press)
         listener.start()
 
+        # Clear once at the very start (cross-platform)
+        os.system('cls' if os.name == 'nt' else 'clear')
+
         while self.running:
-            os.system("clear")
+            # Move cursor to top-left instead of clearing
+            print("\033[H", end="")
+            #os.system("clear")
             self.display_board()
             self.car_step += 1
             self.counter += 1
@@ -47,9 +52,14 @@ class PlayGame(Game):
         
         listener = keyboard.Listener(on_press=self.on_press)
         listener.start()
-        
+
+        # Clear once at the very start (cross-platform)
+        os.system('cls' if os.name == 'nt' else 'clear')
+
         while self.running:
-            os.system("clear")
+            # Move cursor to top-left instead of clearing
+            print("\033[H", end="")
+            #os.system("clear")
             self.display_board()
             self.car_step += 1
             self.counter += 1
