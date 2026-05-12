@@ -1,6 +1,6 @@
 import cProfile     #for profiling
 import pstats       #for saving profiling data
-from Class_PlayGame import PlayGame
+from skripts.Class_PlayGame import PlayGame
 
 
 def start_simulation():
