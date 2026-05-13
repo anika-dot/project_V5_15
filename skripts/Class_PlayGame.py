@@ -7,9 +7,6 @@ try:
 except Exception:
     keyboard = None
 
-if keyboard is None:
-    raise RuntimeError("Keyboard control not available in headless environment")
-
 class PlayGame(Game):
     
     def __init__(self):
