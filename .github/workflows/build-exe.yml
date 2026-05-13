@@ -1,26 +1,119 @@
-name: Build EXE
+name: Build and Release Executables
 on:
   push:
-    branches: [ animated-version ] # Only runs when you update this branch
+    branches: [ animated-version ]
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Tag name to use for the release (optional if pushing a tag)'
+        required: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-    - name: Install dependencies
-      run: |
-        pip install pygame numpy pyinstaller
-    - name: Build with PyInstaller
-      run: |
-        cd skripts
-        pyinstaller --onefile --noconsole --paths . --add-data "Winterthur_neu.txt;." --name GameOfLife Play.py
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: AnimatedGameOfLife
-        path: skripts/dist/GameOfLife.exe
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install pygame numpy pyinstaller
+      - name: Build Windows executable
+        run: |
+          cd skripts
+          python -m PyInstaller --onefile --windowed --paths . --add-data "Winterthur_neu.txt;." --name GameOfLife Play.py
+      - name: Package Windows executable
+        run: |
+          cd skripts/dist
+          Compress-Archive -Path GameOfLife.exe -DestinationPath ../../GameOfLife-windows.zip
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GameOfLife-windows
+          path: GameOfLife-windows.zip
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install pygame numpy pyinstaller
+      - name: Build Linux executable
+        run: |
+          cd skripts
+          python -m PyInstaller --onefile --windowed --paths . --add-data "Winterthur_neu.txt:." --name GameOfLife Play.py
+      - name: Package Linux executable
+        run: |
+          cd skripts/dist
+          tar -czvf ../../GameOfLife-linux.tar.gz GameOfLife
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GameOfLife-linux
+          path: GameOfLife-linux.tar.gz
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install pygame numpy pyinstaller
+      - name: Build macOS executable
+        run: |
+          cd skripts
+          python -m PyInstaller --onefile --windowed --paths . --add-data "Winterthur_neu.txt:." --name GameOfLife Play.py
+      - name: Package macOS executable
+        run: |
+          cd skripts/dist
+          tar -czvf ../../GameOfLife-macos.tar.gz GameOfLife
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GameOfLife-macos
+          path: GameOfLife-macos.tar.gz
+
+  release:
+    needs: [build-windows, build-linux, build-macos]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: GameOfLife-windows
+          path: release-artifacts
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: GameOfLife-linux
+          path: release-artifacts
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: GameOfLife-macos
+          path: release-artifacts
+      - name: Create or update GitHub release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.release_tag || github.ref_name }}
+          name: Release ${{ github.event.inputs.release_tag || github.ref_name }}
+          files: release-artifacts/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
