@@ -17,9 +17,10 @@ jobs:
         pip install pygame numpy pyinstaller
     - name: Build with PyInstaller
       run: |
-        pyinstaller --onefile --noconsole skripts/Play.py
+        cd skripts
+        pyinstaller --onefile --noconsole --paths . --add-data "Winterthur_neu.txt;." Play.py
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: AnimatedGameOfLife
-        path: dist/Play.exe
+        path: dist/GameOfLife.exe
