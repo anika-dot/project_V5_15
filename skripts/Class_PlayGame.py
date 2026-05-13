@@ -1,37 +1,27 @@
-from .Class_Fill import Field, Street, House, Business, Water, Car
-from .Class_Game import Game
+from Class_Fill import Field, Street, House, Business, Water, Car
+from Class_Game import Game
 import os
 import time
-from pynput import keyboard
 
 class PlayGame(Game):
-    
+
     def __init__(self):
+        super().__init__()  # This ensures the board from Class_Game is also ready
         self.board = []
         self.running = True
-        
-    def on_press(self, key):
-        try:
-            if key.char =='q':
-                self.running = False
-        except AttributeError:
-            pass
-  
+        self.car_step = 0  # Vertical Position (row)
+        self.car_col = 11  # Horizontal position (column)
+        self.moving_right = True
+        self.counter = 0  # Good practice to initialize this here too
+        self.last_pos = (None, None)
  
     def play_winterthur_map(self):
         self.load_winterthur_map()
         self.counter = 0
         self.car_step = 0
-        listener = keyboard.Listener(on_press=self.on_press)
-        listener.start()
-
-        # Clear once at the very start (cross-platform)
-        os.system('cls' if os.name == 'nt' else 'clear')
 
         while self.running:
-            # Move cursor to top-left instead of clearing
-            print("\033[H", end="")
-            #os.system("clear")
+            os.system("clear")
             self.display_board()
             self.car_step += 1
             self.counter += 1
@@ -43,23 +33,14 @@ class PlayGame(Game):
             self.simulate_traffic()
             self.check_population_safety()        
             time.sleep(0.5)
-        listener.stop()   
 
     def play_random_map(self):
         self.load_random_city()
         self.counter = 0
         self.car_step = 0
         
-        listener = keyboard.Listener(on_press=self.on_press)
-        listener.start()
-
-        # Clear once at the very start (cross-platform)
-        os.system('cls' if os.name == 'nt' else 'clear')
-
         while self.running:
-            # Move cursor to top-left instead of clearing
-            print("\033[H", end="")
-            #os.system("clear")
+            os.system("clear")
             self.display_board()
             self.car_step += 1
             self.counter += 1
@@ -70,7 +51,5 @@ class PlayGame(Game):
             self.simulate_traffic()
             self.check_population_safety()        
             time.sleep(0.5)
-        listener.stop()
-            
 
 figures = [Field(), Water(), House(), Business(), Street(), Car()]
