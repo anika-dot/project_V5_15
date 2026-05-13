@@ -53,7 +53,7 @@ jobs:
       - name: Build Linux executable
         run: |
           cd skripts
-          python -m PyInstaller --onefile --windowed --paths . --add-data "Winterthur_neu.txt:." --name GameOfLife Play.py
+          python -m PyInstaller --onefile --paths . --add-data "Winterthur_neu.txt:." --name GameOfLife Play.py
       - name: Package Linux executable
         run: |
           cd skripts/dist
@@ -78,7 +78,7 @@ jobs:
       - name: Build macOS executable
         run: |
           cd skripts
-          python -m PyInstaller --onefile --windowed --paths . --add-data "Winterthur_neu.txt:." --name GameOfLife Play.py
+          python -m PyInstaller --onefile --paths . --add-data "Winterthur_neu.txt:." --name GameOfLife Play.py
       - name: Package macOS executable
         run: |
           cd skripts/dist
@@ -108,6 +108,10 @@ jobs:
           find release-artifacts -type f \( -name "*.zip" -o -name "*.tar.gz" \) -exec cp {} final-artifacts/ \;
           echo "Files to upload:"
           ls -lah final-artifacts/
+          if [ $(ls -1 final-artifacts/ | wc -l) -eq 0 ]; then
+            echo "No files found to upload!"
+            exit 1
+          fi
       - name: Create GitHub release
         uses: softprops/action-gh-release@v1
         with:
