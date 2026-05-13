@@ -94,26 +94,21 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')
     steps:
-      - name: Download Windows artifact
+      - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          name: GameOfLife-windows
           path: release-artifacts
-      - name: Download Linux artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: GameOfLife-linux
-          path: release-artifacts
-      - name: Download macOS artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: GameOfLife-macos
-          path: release-artifacts
-      - name: Create or update GitHub release
+      - name: Flatten artifacts
+        run: |
+          mkdir -p final-artifacts
+          find release-artifacts -type f -name "*.zip" -o -name "*.tar.gz" | xargs -I {} cp {} final-artifacts/
+      - name: Create GitHub release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.event.inputs.release_tag || github.ref_name }}
           name: Release ${{ github.event.inputs.release_tag || github.ref_name }}
-          files: release-artifacts/*
+          files: final-artifacts/*
+          draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
