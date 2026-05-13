@@ -18,7 +18,7 @@ jobs:
     - name: Build with PyInstaller
       run: |
         cd skripts
-        pyinstaller --onefile --noconsole --paths . --add-data "Winterthur_neu.txt;." Play.py
+        pyinstaller --onefile --noconsole --paths . --add-data "Winterthur_neu.txt;." --name GameOfLife Play.py
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
