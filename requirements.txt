@@ -4,3 +4,5 @@ numpy==2.4.4
     # via project-v5-15 (pyproject.toml)
 pynput==1.8.1
     # via project-v5-15 (pyproject.toml)
+pygame==2.3.0
+    # via project-v5-15 (pyproject.toml)
