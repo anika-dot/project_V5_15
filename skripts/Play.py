@@ -2,7 +2,7 @@ import pygame
 import sys
 from Class_PlayGame import PlayGame
 
-# Set constants for the window
+# Set constants for the window.
 CELL_SIZE = 20
 GRID_SIZE = 30
 WINDOW_SIZE = CELL_SIZE * GRID_SIZE
