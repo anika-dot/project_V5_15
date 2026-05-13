@@ -14,10 +14,6 @@ firstFlamegraph.PNG
 *.svg
 *.folded
 
-# Optional: Images/Assets
-# (Uncomment the line below if you want to ignore the whole pics folder)
-# pics/
-
 # OS generated files
 Thumbs.db
 .DS_Store
@@ -25,3 +21,10 @@ Thumbs.db
 # Virtual Environment Folder
 venv/
 .venv
+
+# Optional: Images/Assets
+# pics/
+
+
+
+
