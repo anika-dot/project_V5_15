@@ -33,6 +33,7 @@ class PlayGame(Game):
     def play_winterthur_map(self):
         self.load_winterthur_map()
         self.counter = 0
+        self.drivetime = 1
         self.car_step = 0
         if keyboard is not None and hasattr(keyboard, "Listener"):
             listener = keyboard.Listener(on_press=self.on_press)
@@ -63,6 +64,7 @@ class PlayGame(Game):
     def play_random_map(self):
         self.load_random_city()
         self.counter = 0
+        self.drivetime = 1
         self.car_step = 0
         
         listener = keyboard.Listener(on_press=self.on_press)
