@@ -6,7 +6,15 @@ import time
 try:
     from pynput import keyboard
 except Exception:
-    keyboard = None
+    class DummyKeyboard:
+        class Listener:
+            def __init__(self, on_press):
+                pass
+            def start(self):
+                pass
+            def stop(self):
+                pass
+    keyboard = DummyKeyboard()
 
 class PlayGame(Game):
     

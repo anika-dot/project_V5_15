@@ -31,14 +31,20 @@ if __name__ == "__main__":
         profiler.enable()
         start_simulation()
     except KeyboardInterrupt:
-        print("\nSimulation gestoppt. Erstelle Profiling-Bericht...")
+        print("\nSimulation stopped. Generate profiling report...")
     finally:
         # Stopping recording and processing stats
         profiler.disable()
         stats = pstats.Stats(profiler).sort_stats('cumtime')
 
-        print("\n--- PROFILING ERGEBNISSE (Top 20) ---")
+        print("\n--- PROFILING RESULTS (Top 20) ---")
         stats.print_stats(20)
 
         # Saving to file so we can use it for a flamegraph later
         stats.dump_stats("game_profile.prof")
+
+# only for testing:
+# If the module is imported as part of Pytest, start_simulation() should still be executed.
+import os
+if "PYTEST_CURRENT_TEST" in os.environ:
+    start_simulation()
