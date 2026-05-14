@@ -189,7 +189,7 @@ def test_user_choice_winterthur(monkeypatch):
     monkeypatch.setattr(PlayGame, "play_winterthur_map", mock_play_winterthur)
     monkeypatch.setattr(PlayGame, "play_random_map", mock_play_random)
     import importlib
-    import skripts.Play     
+    import skripts.Play
 
     importlib.reload(skripts.Play)
     assert calls["Winterthur"] is True
@@ -244,7 +244,7 @@ def test_user_choice_invalid(monkeypatch):
     monkeypatch.setattr(PlayGame, "play_winterthur_map", mock_play_winterthur)
     monkeypatch.setattr(PlayGame, "play_random_map", mock_play_random)
 
-    import skripts.Play     # noqa: F401
+    import skripts.Play  # noqa: F401
 
     assert calls["winterthur"] is False
     assert calls["random"] is False
