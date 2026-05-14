@@ -1,33 +1,56 @@
-from .Class_Fill import Field, Street, House, Business, Water, Car
-from .Class_Game import Game
+'''
+Module containing the definition of the game logic.
+'''
+
 import os
 import time
+from .Class_Fill import Field, Street, House, Business, Water, Car
+from .Class_Game import Game
 
 # secure import from pynput (because of testing)
 try:
     from pynput import keyboard
-except Exception:
-
+except ImportError:
     class DummyKeyboard:
+        """
+        Creating a dummy keyboard, if pynput.keyboard can not be imported.
+        """
         class Listener:
+            """
+            Initialize dummy listener.
+            """
             def __init__(self, on_press):
                 pass
 
             def start(self):
-                pass
+                """
+                Mock start method.
+                """
 
             def stop(self):
-                pass
+                """
+                Mock stop method.
+                """
 
     keyboard = DummyKeyboard()
 
 
 class PlayGame(Game):
+    """
+    Class to play the game. 
+    """
+
     def __init__(self):
+        super().__init__()
         self.board = []
         self.running = True
+        self.counter = 0
+        self.drivetime = 1
 
     def on_press(self, key):
+        """
+        Definition of the stopping criteria. 
+        """
         try:
             if key.char == "q":
                 self.running = False
@@ -35,6 +58,9 @@ class PlayGame(Game):
             pass
 
     def play_winterthur_map(self):
+        '''
+        Function to play the game with the winterthur map.
+        '''
         self.load_winterthur_map()
         self.counter = 0
         self.drivetime = 1
@@ -70,6 +96,9 @@ class PlayGame(Game):
         listener.stop()
 
     def play_random_map(self):
+        '''
+        Function to play the game with the random map.
+        '''
         self.load_random_city()
         self.counter = 0
         self.drivetime = 1

@@ -1,3 +1,7 @@
+"""
+Main Module of the project to start the game.
+"""
+
 import os
 import cProfile  # for profiling
 import pstats  # for saving profiling data

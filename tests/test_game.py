@@ -1,5 +1,11 @@
+'''
+Test cases.
+'''
+
 import builtins
+import importlib
 import pytest
+import skripts.Play
 from skripts.Class_Game import Game
 from skripts.Class_Fill import Field, Street, House, Business, Water, Car
 from skripts.Class_PlayGame import PlayGame
@@ -167,7 +173,6 @@ def test_load_winterthur_map():
 
 # Tests for Play.py ---------------------------------------
 
-
 # Equivalence class 1: user selects Winterthur map (input = 1)
 def test_user_choice_winterthur(monkeypatch):
     """
@@ -176,20 +181,18 @@ def test_user_choice_winterthur(monkeypatch):
     calls = {"Winterthur": False, "random": False}
 
     # Return interger, not a string
-    def mock_input(prompt):
+    def mock_input(_prompt):
         return 1
 
-    def mock_play_winterthur(self):
+    def mock_play_winterthur(_self):
         calls["Winterthur"] = True
 
-    def mock_play_random(self):
+    def mock_play_random(_self):
         calls["random"] = True
 
     monkeypatch.setattr(builtins, "input", mock_input)
     monkeypatch.setattr(PlayGame, "play_winterthur_map", mock_play_winterthur)
     monkeypatch.setattr(PlayGame, "play_random_map", mock_play_random)
-    import importlib
-    import skripts.Play
 
     importlib.reload(skripts.Play)
     assert calls["Winterthur"] is True
@@ -204,20 +207,18 @@ def test_user_choice_random(monkeypatch):
     calls = {"Winterthur": False, "random": False}
 
     # Änderung: gibt Integer statt String zurück
-    def mock_input(prompt):
+    def mock_input(_prompt):
         return 2
 
-    def mock_play_winterthur(self):
+    def mock_play_winterthur(_self):
         calls["Winterthur"] = True
 
-    def mock_play_random(self):
+    def mock_play_random(_self):
         calls["random"] = True
 
     monkeypatch.setattr(builtins, "input", mock_input)
     monkeypatch.setattr(PlayGame, "play_winterthur_map", mock_play_winterthur)
     monkeypatch.setattr(PlayGame, "play_random_map", mock_play_random)
-    import importlib
-    import skripts.Play
 
     importlib.reload(skripts.Play)
     assert calls["Winterthur"] is False
@@ -231,20 +232,18 @@ def test_user_choice_invalid(monkeypatch):
     """
     calls = {"winterthur": False, "random": False}
 
-    def mock_input(prompt):
+    def mock_input(_prompt):
         return "3"
 
-    def mock_play_winterthur(self):
+    def mock_play_winterthur(_self):
         calls["winterthur"] = True
 
-    def mock_play_random(self):
+    def mock_play_random(_self):
         calls["random"] = True
 
     monkeypatch.setattr(builtins, "input", mock_input)
     monkeypatch.setattr(PlayGame, "play_winterthur_map", mock_play_winterthur)
     monkeypatch.setattr(PlayGame, "play_random_map", mock_play_random)
-
-    import skripts.Play  # noqa: F401
 
     assert calls["winterthur"] is False
     assert calls["random"] is False
@@ -303,8 +302,6 @@ def test_on_press_special_key_does_not_crash():
         Mock special key that does not have a char attribute,
         to test that on_press handles it gracefully."""
 
-        pass
-
     game.on_press(MockSpecialKey())
 
     assert game.running is True
@@ -338,13 +335,11 @@ def test_play_winterthur_map_initializes_values(monkeypatch):
             """
             Mock start method that does nothing, but is needed for testing.
             """
-            pass
 
         def stop(self):
             """
             Mock stop method that does nothing, but is needed for testing.
             """
-            pass
 
     monkeypatch.setattr("skripts.Class_PlayGame.keyboard.Listener", MockListener)
 
@@ -386,13 +381,11 @@ def test_play_random_map_initializes_values(monkeypatch):
             """
             Mock start method that does nothing, but is needed for testing.
             """
-            pass
 
         def stop(self):
             """'
             Mock stop method that does nothing, but is needed for testing.
             """
-            pass
 
     monkeypatch.setattr("skripts.Class_PlayGame.keyboard.Listener", MockListener)
 
