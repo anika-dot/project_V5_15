@@ -19,11 +19,11 @@ class File:
         Args:
             path (str): Path to the text file that should be cleaned.
         """
-        with open(path, "r", encoding="utf-8") as file:
-            filedata = file.read()
+        with open(path, "r", encoding="utf-8") as f:
+            filedata = f.read()
         filedata = filedata.replace(",", "")
-        with open(path, "w", encoding="utf-8") as file:
-            file.write(filedata)
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(filedata)
 
 
 File.remove_commas("Winterthur_neu.txt")
