@@ -1,6 +1,6 @@
-'''
+"""
 Test cases.
-'''
+"""
 
 import builtins
 import importlib
@@ -172,6 +172,7 @@ def test_load_winterthur_map():
 
 
 # Tests for Play.py ---------------------------------------
+
 
 # Equivalence class 1: user selects Winterthur map (input = 1)
 def test_user_choice_winterthur(monkeypatch):

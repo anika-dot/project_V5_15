@@ -125,9 +125,9 @@ class Game:
         """
         car_position = 11
         self.right = True
-        for i in range(30):         # pylint: disable=unused-variable
+        for i in range(30):  # pylint: disable=unused-variable
             if self.right:
-                for j in range(30): # pylint: disable=unused-variable
+                for j in range(30):  # pylint: disable=unused-variable
                     if self.car_step != 0:
                         if isinstance(
                             self.board[self.car_step - 1][car_position], Street
@@ -149,7 +149,7 @@ class Game:
         Intended to detect overpopulated or unsafe areas in the city.
         Currently does nothing.
         """
-        pass        # pylint: disable=W0107
+        pass  # pylint: disable=W0107
 
 
 figures = [Field(), Water(), House(), Business(), Street(), Car()]

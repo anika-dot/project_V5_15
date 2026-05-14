@@ -3,10 +3,12 @@ Module providing file utility functions used by the city simulation.
 Contains helper functionality for reading and cleaning map files.
 """
 
+
 class File:
     """
     Utility class providing simple file manipulation methods.
     """
+
     def __init__(self):
         pass
 

@@ -1,6 +1,6 @@
-'''
+"""
 Module containing the definition of the game logic.
-'''
+"""
 
 import os
 import time
@@ -11,14 +11,17 @@ from .Class_Game import Game
 try:
     from pynput import keyboard
 except ImportError:
+
     class DummyKeyboard:
         """
         Creating a dummy keyboard, if pynput.keyboard can not be imported.
         """
+
         class Listener:
             """
             Initialize dummy listener.
             """
+
             def __init__(self, on_press):
                 pass
 
@@ -37,7 +40,7 @@ except ImportError:
 
 class PlayGame(Game):
     """
-    Class to play the game. 
+    Class to play the game.
     """
 
     def __init__(self):
@@ -49,7 +52,7 @@ class PlayGame(Game):
 
     def on_press(self, key):
         """
-        Definition of the stopping criteria. 
+        Definition of the stopping criteria.
         """
         try:
             if key.char == "q":
@@ -58,9 +61,9 @@ class PlayGame(Game):
             pass
 
     def play_winterthur_map(self):
-        '''
+        """
         Function to play the game with the winterthur map.
-        '''
+        """
         self.load_winterthur_map()
         self.counter = 0
         self.drivetime = 1
@@ -96,9 +99,9 @@ class PlayGame(Game):
         listener.stop()
 
     def play_random_map(self):
-        '''
+        """
         Function to play the game with the random map.
-        '''
+        """
         self.load_random_city()
         self.counter = 0
         self.drivetime = 1
