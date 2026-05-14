@@ -90,4 +90,4 @@ jobs:
     
     - name: Pylint (allow warnings)
       run: |
-        PYTHONPATH=. pylint --exit-zero $(find . -type f -name "*.py" ...)
+        PYTHONPATH=. pylint --exit-zero $(find . -type f -name "*.py" -not -path "./.venv/*" -not -path "./venv/*" -not -path "./.git/*")
