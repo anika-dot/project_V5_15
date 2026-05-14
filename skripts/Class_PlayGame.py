@@ -2,6 +2,7 @@ from .Class_Fill import Field, Street, House, Business, Water, Car
 from .Class_Game import Game
 import os
 import time
+# secure import from pynput (because of testing)
 try:
     from pynput import keyboard
 except Exception:
@@ -25,8 +26,11 @@ class PlayGame(Game):
         self.load_winterthur_map()
         self.counter = 0
         self.car_step = 0
-        listener = keyboard.Listener(on_press=self.on_press)
-        listener.start()
+        if keyboard is not None and hasattr(keyboard, "Listener"):
+            listener = keyboard.Listener(on_press=self.on_press)
+            listener.start()
+        else:
+            listener = None
 
         # Clear once at the very start (cross-platform)
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -34,7 +38,7 @@ class PlayGame(Game):
         while self.running:
             # Move cursor to top-left instead of clearing
             print("\033[H", end="")
-            #os.system("clear")
+            # os.system("clear")
             self.display_board()
             self.car_step += 1
             self.counter += 1
@@ -62,7 +66,7 @@ class PlayGame(Game):
         while self.running:
             # Move cursor to top-left instead of clearing
             print("\033[H", end="")
-            #os.system("clear")
+            # os.system("clear")
             self.display_board()
             self.car_step += 1
             self.counter += 1
@@ -71,9 +75,9 @@ class PlayGame(Game):
             print()
             self.population_growth()
             self.simulate_traffic()
-            self.check_population_safety()        
+            self.check_population_safety()
             time.sleep(0.5)
-        listener.stop()
-            
+        if listener is not None:
+            listener.stop()
 
 figures = [Field(), Water(), House(), Business(), Street(), Car()]

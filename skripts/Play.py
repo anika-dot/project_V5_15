@@ -1,7 +1,6 @@
-import cProfile     #for profiling
-import pstats       #for saving profiling data
+import cProfile     # for profiling
+import pstats       # for saving profiling data
 from skripts.Class_PlayGame import PlayGame
-
 
 def start_simulation():
     """
@@ -9,10 +8,10 @@ def start_simulation():
     Unser input "1": uses the winterthur map. User input "2" uses a randomly generated map.
     """
 
-    user_choice = int(input("Mit welcher Karte möchten Sie weiterfahren?\
+    user_choice = int(input("Which map would you like to use to continue?\
                                          \n 1:Winterthur\
-                                             \n 2:Zufällig generierte Karte\
-                                                 \n wählen Sie 1 oder 2."))
+                                             \n 2:Randomly generated map\
+                                                 \n choose 1 or 2."))
 
     if user_choice == 1:
         simulation = PlayGame()

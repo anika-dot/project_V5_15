@@ -170,50 +170,45 @@ def test_load_winterthur_map():
 # Equivalence class 1: user selects Winterthur map (input = 1)
 def test_user_choice_winterthur(monkeypatch):
     '''
-    Test that selecting "1" calls play_winterthur_map and not play_random_map.
+    Test that selecting 1 calls play_winterthur_map and not play_random_map.
     '''
-    calls = {"winterthur": False, "random": False}
-
+    calls = {"Winterthur": False, "random": False}
+    # Return interger, not a string
     def mock_input(prompt):
-        return "1"
-
+        return 1
     def mock_play_winterthur(self):
-        calls["winterthur"] = True
-
+        calls["Winterthur"] = True
     def mock_play_random(self):
         calls["random"] = True
-
     monkeypatch.setattr(builtins, "input", mock_input)
     monkeypatch.setattr(PlayGame, "play_winterthur_map", mock_play_winterthur)
     monkeypatch.setattr(PlayGame, "play_random_map", mock_play_random)
-
+    import importlib
     import skripts.Play
-
-    assert calls["winterthur"] is True
+    importlib.reload(skripts.Play)
+    assert calls["Winterthur"] is True
     assert calls["random"] is False
-
 
 # Equivalence class 2: user selects random map (input = 2)
 def test_user_choice_random(monkeypatch):
     '''
-    Test that selecting "2" calls play_random_map and not play_winterthur_map.
+    Test that selecting 2 calls play_random_map and not play_winterthur_map.
     '''
-    calls = {"winterthur": False, "random": False}
-
+    calls = {"Winterthur": False, "random": False}
+    # Änderung: gibt Integer statt String zurück
     def mock_input(prompt):
-        return "2"
-
+        return 2
     def mock_play_winterthur(self):
-        calls["winterthur"] = True
-
+        calls["Winterthur"] = True
     def mock_play_random(self):
         calls["random"] = True
-
     monkeypatch.setattr(builtins, "input", mock_input)
     monkeypatch.setattr(PlayGame, "play_winterthur_map", mock_play_winterthur)
-    monkeypatch.setattr(PlayGame, "play_random_map", mock_play_random) 
-
-    assert calls["winterthur"] is False
+    monkeypatch.setattr(PlayGame, "play_random_map", mock_play_random)
+    import importlib
+    import skripts.Play
+    importlib.reload(skripts.Play)
+    assert calls["Winterthur"] is False
     assert calls["random"] is True
 
 

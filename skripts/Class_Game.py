@@ -7,10 +7,11 @@ from .Class_Fill import Field, Street, House, Business, Water, Car
 class Game:
     def __init__(self):
         self.board = []
-            
+        self.car_step = 0
+          
     def load_winterthur_map(self):
         file_path = Path(__file__).parent / "Winterthur_neu.txt"
-    
+ 
         f = open(file_path, "r", encoding="utf-8")
 
         self.lines = f.readlines()
@@ -52,22 +53,28 @@ class Game:
         temp_row = -1
         temp_col = -1
         for i in range(len(self.board)):
-            for j in range(len(self.board[0])):                
-                if isinstance(self.board[i][j], Field):
+            for j in range(len(self.board[0])):
+                cell = self.board[i][j]
+                
+                # Accessing an attribute raises an AttributeError when the value is None
+                _ = cell.character
+                
+                if isinstance(cell, Field):
                     temp_row = i
                     temp_col = j    
-                if isinstance(self.board[i][j], House):
+                if isinstance(cell, House):
+                    # Population growth: increase the number of residents when >= 1
+                    if cell.bewohner >= 1:
+                        cell.bewohner += 1
+                    
                     # death rate applied each generation
-                    self.board[i][j].resident -= 0.5
-
+                    cell.resident -= 0.5
                     # create new house on nearest empty field when population reaches threshold
-                    if self.board[i][j].resident == 5 and temp_row >= 0:
+                    if cell.resident == 5 and temp_row >= 0:
                         self.board[temp_row][temp_col] = House()
                         
-                    if self.board[i][j].resident == 0:
+                    if cell.resident == 0:
                         self.board[i][j] = Field()
-                    else:
-                        self.board[i][j].resident += 1
 
     def simulate_traffic(self):
         car_position = 11
