@@ -1,5 +1,10 @@
-import cProfile     #for profiling
-import pstats       #for saving profiling data
+"""
+Main Module of the project to start the game.
+"""
+
+import os
+import cProfile  # for profiling
+import pstats  # for saving profiling data
 from skripts.Class_PlayGame import PlayGame
 
 
@@ -9,10 +14,14 @@ def start_simulation():
     Unser input "1": uses the winterthur map. User input "2" uses a randomly generated map.
     """
 
-    user_choice = int(input("Mit welcher Karte möchten Sie weiterfahren?\
+    user_choice = int(
+        input(
+            "Which map would you like to use to continue?\
                                          \n 1:Winterthur\
-                                             \n 2:Zufällig generierte Karte\
-                                                 \n wählen Sie 1 oder 2."))
+                                             \n 2:Randomly generated map\
+                                                 \n choose 1 or 2."
+        )
+    )
 
     if user_choice == 1:
         simulation = PlayGame()
@@ -32,14 +41,19 @@ if __name__ == "__main__":
         profiler.enable()
         start_simulation()
     except KeyboardInterrupt:
-        print("\nSimulation gestoppt. Erstelle Profiling-Bericht...")
+        print("\nSimulation stopped. Generate profiling report...")
     finally:
         # Stopping recording and processing stats
         profiler.disable()
-        stats = pstats.Stats(profiler).sort_stats('cumtime')
+        stats = pstats.Stats(profiler).sort_stats("cumtime")
 
-        print("\n--- PROFILING ERGEBNISSE (Top 20) ---")
+        print("\n--- PROFILING RESULTS (Top 20) ---")
         stats.print_stats(20)
 
         # Saving to file so we can use it for a flamegraph later
         stats.dump_stats("game_profile.prof")
+
+# only for testing:
+# If the module is imported as part of Pytest, start_simulation() should still be executed.
+if "PYTEST_CURRENT_TEST" in os.environ:
+    start_simulation()
