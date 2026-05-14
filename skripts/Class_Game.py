@@ -106,8 +106,8 @@ class Game:
                     temp_col = j
                 if isinstance(cell, House):
                     # Population growth: increase the number of residents when >= 1
-                    if cell.bewohner >= 1:
-                        cell.bewohner += 1
+                    if cell.resident >= 1:
+                        cell.resident += 1
                     # death rate applied each generation
                     cell.resident -= 0.5
                     # create new house on nearest empty field when population reaches threshold
