@@ -82,7 +82,7 @@ class Game:
         car_position = 11
         self.right = True
         for i in range(30):
-            if self.right == True:
+            if self.right:
                 for j in range(30):
                     if self.car_step != 0:
                         if isinstance(

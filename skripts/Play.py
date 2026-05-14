@@ -1,3 +1,4 @@
+import os
 import cProfile  # for profiling
 import pstats  # for saving profiling data
 from skripts.Class_PlayGame import PlayGame
@@ -50,7 +51,5 @@ if __name__ == "__main__":
 
 # only for testing:
 # If the module is imported as part of Pytest, start_simulation() should still be executed.
-import os
-
 if "PYTEST_CURRENT_TEST" in os.environ:
     start_simulation()
