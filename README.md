@@ -88,14 +88,14 @@ If you encounter issues:
 
 - Check your Python version (python --version)
 - Ensure all dependencies are installed
-- Open an issue on [https://github.com/anika-dot/project_V5_15/issues]
+- Open an issue on https://github.com/anika-dot/project_V5_15/issues
 
 
 ## Authors
 
-- Michelle Schmid ([github.com/schmimmim]()
-- Philipp Osterwalder ([github.com/R0b0000007]()
-- Anika Heim ([github.com/anika-dot]()
+- Michelle Schmid ([github.com/schmimmim]())
+- Philipp Osterwalder ([github.com/R0b0000007]())
+- Anika Heim ([github.com/anika-dot]())
 
 
 
