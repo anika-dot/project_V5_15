@@ -1,6 +1,7 @@
-import cProfile     # for profiling
-import pstats       # for saving profiling data
+import cProfile  # for profiling
+import pstats  # for saving profiling data
 from skripts.Class_PlayGame import PlayGame
+
 
 def start_simulation():
     """
@@ -8,10 +9,14 @@ def start_simulation():
     Unser input "1": uses the winterthur map. User input "2" uses a randomly generated map.
     """
 
-    user_choice = int(input("Which map would you like to use to continue?\
+    user_choice = int(
+        input(
+            "Which map would you like to use to continue?\
                                          \n 1:Winterthur\
                                              \n 2:Randomly generated map\
-                                                 \n choose 1 or 2."))
+                                                 \n choose 1 or 2."
+        )
+    )
 
     if user_choice == 1:
         simulation = PlayGame()
@@ -35,7 +40,7 @@ if __name__ == "__main__":
     finally:
         # Stopping recording and processing stats
         profiler.disable()
-        stats = pstats.Stats(profiler).sort_stats('cumtime')
+        stats = pstats.Stats(profiler).sort_stats("cumtime")
 
         print("\n--- PROFILING RESULTS (Top 20) ---")
         stats.print_stats(20)
@@ -46,5 +51,6 @@ if __name__ == "__main__":
 # only for testing:
 # If the module is imported as part of Pytest, start_simulation() should still be executed.
 import os
+
 if "PYTEST_CURRENT_TEST" in os.environ:
     start_simulation()
