@@ -60,13 +60,13 @@ def test_population_growth_increases_population():
     """
     game = Game()
     house = House()
-    house.bewohner = 1
+    house.resident = 1
 
     game.board = [[house]]
 
     game.population_growth()
 
-    assert game.board[0][0].bewohner > 1
+    assert game.board[0][0].resident > 1
 
 
 # Equivalence class 3: edge case - house dies
@@ -76,7 +76,7 @@ def test_population_house_turns_into_field():
     """
     game = Game()
     house = House()
-    house.bewohner = 0
+    house.resident = 0
 
     game.board = [[house]]
 
