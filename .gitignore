@@ -1,0 +1,30 @@
+# Python bytecode (compiled files)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Data files (NumPy arrays)
+*.npy
+
+# Files created due to profiling/flamegraph
+FlameGraph/
+firstFlamegraph.PNG
+*.prof
+*.svg
+*.folded
+
+# OS generated files
+Thumbs.db
+.DS_Store
+
+# Virtual Environment Folder
+venv/
+.venv
+
+# Optional: Images/Assets
+# pics/
+
+
+
+
