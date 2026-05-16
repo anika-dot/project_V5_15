@@ -78,9 +78,8 @@ class PlayGame(Game):
         os.system("cls" if os.name == "nt" else "clear")
 
         while self.running:
-            # Move cursor to top-left instead of clearing
-            print("\033[H", end="")
-            # os.system("clear")
+            
+            print("\033[H", end="") # Move cursor to top-left instead of clearing
             self.display_board()
             self.car_step += 1
             self.counter += 1
@@ -114,9 +113,8 @@ class PlayGame(Game):
         os.system("cls" if os.name == "nt" else "clear")
 
         while self.running:
-            # Move cursor to top-left instead of clearing
-            print("\033[H", end="")
-            # os.system("clear")
+            
+            print("\033[H", end="") # Move cursor to top-left instead of clearing
             self.display_board()
             self.car_step += 1
             self.counter += 1
