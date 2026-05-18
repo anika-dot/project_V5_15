@@ -112,7 +112,7 @@ class PlayGame(Game):
         os.system("cls" if os.name == "nt" else "clear")
 
         while self.running:
-            os.system("cls" if os.name == "nt" else "clear")
+            print("\033[H\033[J", end="")
 
             self.display_board()
 
