@@ -82,6 +82,25 @@ Run all tests using pytest:
 pytest
 ```
 
+## Profiling
+The following instructions and commands were used to create the Flamegraph (Windows):
+Run the game for at least 20 seconds to get some data.
+Move the game_profile.prof file from the skripts folder into the project_V5_15 folder. Then use the following commands:
+```
+pip install flameprof
+git clone --depth=1 https://github.com/brendangregg/FlameGraph
+python -m flameprof game_profile.prof > simulation_flamegraph.svg
+```
+Now open the .svg file in a browser to see the flamegraph.
+
+## Deployment
+GitHub Actions commands for automated executables and release creation.
+To generate only the executables, just push to the animated-version branch without a tag.
+```
+git commit -m "Preparing Release v1.0.0"
+git tag v1.0.0
+git push origin animated-version --tags // or just git push --tags
+```
 
 ## Help
 If you encounter issues:
@@ -102,7 +121,7 @@ If you encounter issues:
 ## Version History
 
 &#x20;   \* Initial Release - 0.1 - 2026-05-11
-
+Then further releases (see GitHub)
 
 ## License
 
