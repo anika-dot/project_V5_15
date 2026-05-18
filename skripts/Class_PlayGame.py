@@ -112,20 +112,25 @@ class PlayGame(Game):
         os.system("cls" if os.name == "nt" else "clear")
 
         while self.running:
-            print("\033[H", end="")  # Move cursor to top-left instead of clearing
+            os.system("cls" if os.name == "nt" else "clear")
+
             self.display_board()
+
             self.car_step += 1
             self.counter += 1
+
             print()
             print(
-                "Generation: ",
-                self.counter,
-                "  House(☖), Business(⌷), Water(~), Land(.), Car(🝞), Street(=)",
+                f"Generation: {self.counter}  "
+                "House(☖), Business(*), Water(~), Land(.), Car(🝞), Street(=)"
             )
+            print("Press Q to quit")
             print()
+
             self.population_growth()
             self.simulate_traffic()
             self.check_population_safety()
+
             time.sleep(0.5)
         if listener is not None:
             listener.stop()
