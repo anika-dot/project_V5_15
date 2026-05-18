@@ -2,9 +2,15 @@
 Main Module of the project to start the game.
 """
 
+import sys
 import os
+from pathlib import Path
 import cProfile  # for profiling
 import pstats  # for saving profiling data
+
+# Add parent directory to path so imports work when running this file directly
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 from skripts.Class_PlayGame import PlayGame
 
 
